@@ -1,137 +1,177 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ChemLearn</title>
+// Global Variables
+let selectedSubject = '';
+let selectedTutor = '';
+let selectedTopic = '';
+let tutors = JSON.parse(localStorage.getItem('tutors')) || ['Alex', 'David', 'Sravya', 'Olivia', 'Mermi', 'Ogneson'];
+let score = 0;
+let timerInterval;
+let timeLeft = 300; // Default 5 minutes
+let gameMode = 'type'; // 'type' or 'draw'
 
-<style>
-    body {
-        margin: 0;
-        background: #6082B6; /* glaucous */
-        font-family: Arial, sans-serif;
-        color: white;
+// Sample Data for Modularity
+const subjects = {
+    chemistry: {
+        topics: {
+            hybridisation: 'Content for Hybridisation...',
+            'sigma-pi': 'Content for Sigma & Pi bonds...',
+            iupac: {
+                teaching: 'IUPAC rules: 1. Identify the longest chain. 2. Number carbons. Examples: Methane (CH4) is methane. Ethane (C2H6) is ethane.',
+                examples: [
+                    { structure: 'CH4', name: 'methane' },
+                    { structure: 'C2H6', name: 'ethane' },
+                    { structure: 'C3H8', name: 'propane' }
+                ]
+            }
+        }
     }
+};
 
-    /* Hamburger */
-    #hamburger {
-        font-size: 28px;
-        padding: 15px;
-        cursor: pointer;
-        background: none;
-        border: none;
-        color: white;
+// Sidebar Toggle
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('active');
+}
+
+// Screen Navigation
+function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+    toggleSidebar();
+}
+
+// Subject Selection
+function selectSubject(subject) {
+    selectedSubject = subject;
+    showScreen('tutor-selection');
+    loadTutors();
+}
+
+// Tutor Selection
+function loadTutors() {
+    const list = document.getElementById('tutor-list');
+    list.innerHTML = '';
+    tutors.forEach(tutor => {
+        const btn = document.createElement('button');
+        btn.className = 'tutor-btn';
+        btn.textContent = tutor;
+        btn.onclick = () => { selectedTutor = tutor; };
+        list.appendChild(btn);
+    });
+}
+
+// Topic Selection
+function selectTopic(topic) {
+    selectedTopic = topic;
+    if (topic === 'iupac') {
+        showScreen('iupac-teach');
+        loadIUPACTeach();
+    } else {
+        alert('Topic not fully implemented yet.');
     }
+}
 
-    /* Sidebar */
-    #sidebar {
-        position: fixed;
-        top: 0;
-        left: -250px;
-        width: 250px;
-        height: 100%;
-        background: #2c2c2c;
-        color: white;
-        padding-top: 60px;
-        transition: 0.3s;
-        z-index: 10;
+// IUPAC Teaching
+function loadIUPACTeach() {
+    document.getElementById('tutor-display').textContent = `Tutor: ${selectedTutor}`;
+    document.getElementById('teaching-content').textContent = subjects.chemistry.topics.iupac.teaching;
+    alert('Audio: [Simulated teaching voice]');
+}
+
+// IUPAC Game
+function startIUPACGame() {
+    showScreen('iupac-game');
+    score = 0;
+    timeLeft = parseInt(prompt('Set timer (seconds, 60-300):', 300)) || 300;
+    gameMode = prompt('Mode: type or draw?', 'type');
+    document.getElementById('score').textContent = score;
+    startTimer();
+    loadGameQuestion();
+}
+
+function loadGameQuestion() {
+    const content = document.getElementById('game-content');
+    const example = subjects.chemistry.topics.iupac.examples[Math.floor(Math.random() * 3)];
+    if (gameMode === 'type') {
+        content.innerHTML = `<p>Structure: ${example.structure}</p><input id="answer" placeholder="Type IUPAC name"><button onclick="checkAnswer('${example.name}')">Submit</button>`;
+    } else {
+        content.innerHTML = `<p>Name: ${example.name}</p><canvas id="sketch" width="300" height="200"></canvas><button onclick="checkDrawing('${example.structure}')">Submit Drawing</button>`;
+        initCanvas();
     }
+}
 
-    #sidebar ul {
-        list-style: none;
-        padding: 20px;
-        margin: 0;
+function checkAnswer(correct) {
+    const answer = document.getElementById('answer').value.toLowerCase();
+    if (answer === correct) {
+        score += 10;
+        alert('Correct!');
+    } else {
+        alert('Wrong!');
     }
+    document.getElementById('score').textContent = score;
+    loadGameQuestion();
+}
 
-    #sidebar li {
-        padding: 12px 0;
-        font-size: 18px;
-        cursor: pointer;
+function checkDrawing(correct) {
+    // Simple check: Assume correct if canvas has content (enhance later)
+    if (confirm('Is your drawing correct?')) {
+        score += 10;
     }
+    document.getElementById('score').textContent = score;
+    loadGameQuestion();
+}
 
-    main {
-        margin-top: 40px;
-        padding: 20px;
-    }
+function initCanvas() {
+    const canvas = document.getElementById('sketch');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+    canvas.addEventListener('mousedown', () => drawing = true);
+    canvas.addEventListener('mouseup', () => drawing = false);
+    canvas.addEventListener('mousemove', (e) => {
+        if (drawing) {
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+        }
+    });
+}
 
-    .page {
-        display: none;
-    }
+function startTimer() {
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('time-left').textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            alert('Time up! Final Score: ' + score);
+        }
+    }, 1000);
+}
 
-    .active {
-        display: block;
-    }
-</style>
+function hint() {
+    alert('Hint: Check the longest chain.');
+}
 
-</head>
-<body>
+function retry() {
+    clearInterval(timerInterval);
+    startIUPACGame();
+}
 
-<!-- Hamburger -->
-<button id="hamburger">☰</button>
+// Settings: Edit Tutors
+function loadSettings() {
+    const list = document.getElementById('tutor-edit-list');
+    list.innerHTML = '';
+    tutors.forEach((tutor, index) => {
+        const input = document.createElement('input');
+        input.value = tutor;
+        input.id = `tutor-${index}`;
+        list.appendChild(input);
+    });
+}
 
-<!-- Sidebar -->
-<aside id="sidebar">
-    <ul>
-        <li onclick="showPage('home')">Home</li>
-        <li onclick="showPage('topics')">Chemistry Topics</li>
-        <li onclick="showPage('friends')">Friends</li>
-        <li onclick="showPage('about')">About Us</li>
-        <li onclick="showPage('settings')">Settings</li>
-        <li onclick="showPage('tutors')">Tutors</li>
-    </ul>
-</aside>
+function saveTutorNames() {
+    tutors = tutors.map((_, index) => document.getElementById(`tutor-${index}`).value);
+    localStorage.setItem('tutors', JSON.stringify(tutors));
+    alert('Saved!');
+}
 
-<!-- Main Content -->
-<main>
-    <section id="home" class="page active">
-        <h1>Home Screen</h1>
-        <p>Welcome — choose Chemistry to begin interactive lessons and games.</p>
-    </section>
-
-    <section id="topics" class="page">
-        <h1>Chemistry Topics</h1>
-        <ul>
-            <li>Hybridisation (sp, sp2, sp3, sp3d, sp3d2)</li>
-            <li>Identifying Sigma & Pi Bonds</li>
-            <li>IUPAC Nomenclature</li>
-        </ul>
-    </section>
-
-    <section id="friends" class="page">
-        <h1>Friends Page</h1>
-        <p>Social features placeholder.</p>
-    </section>
-
-    <section id="about" class="page">
-        <h1>About Us</h1>
-        <p>This app helps JEE aspirants learn chemistry via gamified lessons.</p>
-    </section>
-
-    <section id="settings" class="page">
-        <h1>Settings</h1>
-        <p>Edit tutor names and preferences in the full version.</p>
-    </section>
-
-    <section id="tutors" class="page">
-        <h1>Tutor Selection</h1>
-        <p>Choose your tutor (Alex, David, Sravya, Olivia, Mermi, Ogneson).</p>
-    </section>
-</main>
-
-<script>
-    const sidebar = document.getElementById("sidebar");
-    const burger = document.getElementById("hamburger");
-
-    burger.onclick = () => {
-        sidebar.style.left = sidebar.style.left === "0px" ? "-250px" : "0px";
-    };
-
-    function showPage(page) {
-        document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-        document.getElementById(page).classList.add("active");
-        sidebar.style.left = "-250px";
-    }
-</script>
-
-</body>
-</html>
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    loadSettings(); // For settings screen
+});
