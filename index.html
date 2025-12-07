@@ -1,150 +1,142 @@
-import React, { useState } from "react";
-import "./App.css";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChemLearn</title>
 
-// Simple, fixed ChemLearn single-file React component
-// Changes made for stability:
-// 1. Moved liStyle above App to avoid any temporal confusion
-// 2. Added basic ARIA attributes and button type
-// 3. Kept exactly the same UI and behavior you requested (glaucous background, removed Messages)
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #6082B6; /* Glaucous */
+      font-family: Arial, sans-serif;
+      color: white;
+      overflow-x: hidden;
+    }
 
-const liStyle = {
-  padding: "12px 0",
-  fontSize: "18px",
-  cursor: "pointer",
-};
+    /* Hamburger */
+    .hamburger {
+      font-size: 28px;
+      padding: 12px;
+      cursor: pointer;
+    }
 
-export default function App() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [page, setPage] = useState("home");
+    /* Sidebar */
+    #sidebar {
+      height: 100%;
+      width: 250px;
+      background: #2c2c2c;
+      position: fixed;
+      top: 0;
+      left: -250px;
+      transition: 0.3s;
+      padding-top: 60px;
+    }
 
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+    #sidebar ul {
+      list-style: none;
+      padding: 20px;
+      margin: 0;
+    }
 
-  const changePage = (p) => {
-    setPage(p);
-    setSidebarOpen(false);
-  };
+    #sidebar ul li {
+      padding: 12px 0;
+      font-size: 18px;
+      cursor: pointer;
+      border-bottom: 1px solid #444;
+    }
 
-  // Background color glaucous (#6082B6)
-  const pageStyle = {
-    backgroundColor: "#6082B6",
-    minHeight: "100vh",
-    width: "100%",
-    padding: "20px",
-    color: "white",
-  };
+    /* Page content */
+    #content {
+      padding: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
 
-  return (
-    <div style={pageStyle}>
-      {/* Hamburger */}
-      <button
-        type="button"
-        aria-label={sidebarOpen ? "Close menu" : "Open menu"}
-        onClick={toggleSidebar}
-        style={{ fontSize: "24px", padding: "10px", cursor: "pointer" }}
-      >
-        ☰
-      </button>
+<body>
 
-      {/* Sidebar */}
-      <aside
-        aria-hidden={!sidebarOpen}
-        style={{
-          position: "fixed",
-          top: 0,
-          left: sidebarOpen ? 0 : "-250px",
-          width: "250px",
-          height: "100%",
-          background: "#2c2c2c",
-          color: "white",
-          paddingTop: "60px",
-          transition: "0.3s",
-          zIndex: 20,
-        }}
-      >
-        <nav aria-label="Main menu">
-          <ul style={{ listStyle: "none", padding: "20px", margin: 0 }}>
-            <li style={liStyle} onClick={() => changePage("home")}>Home</li>
-            <li style={liStyle} onClick={() => changePage("topics")}>
-              Chemistry Topics
-            </li>
-            <li style={liStyle} onClick={() => changePage("friends")}>Friends</li>
-            {/* Messages removed as requested */}
-            <li style={liStyle} onClick={() => changePage("about")}>About Us</li>
-            <li style={liStyle} onClick={() => changePage("settings")}>Settings</li>
-            <li style={liStyle} onClick={() => changePage("tutors")}>Tutors</li>
+  <!-- Hamburger -->
+  <span class="hamburger" onclick="toggleSidebar()">☰</span>
+
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <ul>
+      <li onclick="showPage('home')">Home</li>
+      <li onclick="showPage('topics')">Chemistry Topics</li>
+      <li onclick="showPage('friends')">Friends</li>
+      <!-- Messages removed exactly like you asked -->
+      <li onclick="showPage('about')">About Us</li>
+      <li onclick="showPage('settings')">Settings</li>
+      <li onclick="showPage('tutors')">Tutors</li>
+    </ul>
+  </div>
+
+  <!-- Content -->
+  <div id="content"></div>
+
+  <script>
+    function toggleSidebar() {
+      let sb = document.getElementById("sidebar");
+      sb.style.left = sb.style.left === "0px" ? "-250px" : "0px";
+    }
+
+    function showPage(page) {
+      const content = document.getElementById("content");
+
+      if (page === "home") {
+        content.innerHTML = `
+          <h1>Home Screen</h1>
+          <p>Welcome — choose Chemistry to begin interactive lessons and games.</p>
+        `;
+      }
+
+      if (page === "topics") {
+        content.innerHTML = `
+          <h1>Chemistry Topics</h1>
+          <ul>
+            <li>Hybridisation (sp, sp2, sp3, sp3d, sp3d2)</li>
+            <li>Identifying Sigma & Pi Bonds</li>
+            <li>IUPAC Nomenclature</li>
           </ul>
-        </nav>
-      </aside>
+        `;
+      }
 
-      {/* Page Content */}
-      <main style={{ marginTop: "40px" }}>
-        {page === "home" && <HomePage />}
-        {page === "topics" && <TopicsPage />}
-        {page === "friends" && <FriendsPage />}
-        {page === "about" && <AboutPage />}
-        {page === "settings" && <SettingsPage />}
-        {page === "tutors" && <TutorsPage />}
-      </main>
-    </div>
-  );
-}
+      if (page === "friends") {
+        content.innerHTML = `
+          <h1>Friends Page</h1>
+          <p>Social features placeholder.</p>
+        `;
+      }
 
-// ---------------- PAGES ----------------
+      if (page === "about") {
+        content.innerHTML = `
+          <h1>About Us</h1>
+          <p>This app helps JEE aspirants learn chemistry via gamified lessons.</p>
+        `;
+      }
 
-const HomePage = () => (
-  <section>
-    <h1>Home Screen</h1>
-    <div style={{ marginTop: 8 }}>
-      <p>Welcome — choose Chemistry to begin interactive lessons and games.</p>
-    </div>
-  </section>
-);
+      if (page === "settings") {
+        content.innerHTML = `
+          <h1>Settings</h1>
+          <p>Edit tutor names and preferences in the full version.</p>
+        `;
+      }
 
-const TopicsPage = () => (
-  <section>
-    <h1>Chemistry Topics</h1>
-    <div style={{ marginTop: 8 }}>
-      <ul>
-        <li>Hybridisation (sp, sp2, sp3, sp3d, sp3d2)</li>
-        <li>Identifying Sigma & Pi Bonds</li>
-        <li>IUPAC Nomenclature</li>
-      </ul>
-    </div>
-  </section>
-);
+      if (page === "tutors") {
+        content.innerHTML = `
+          <h1>Tutor Selection</h1>
+          <p>Choose your tutor (Alex, David, Sravya, Olivia, Mermi, Ogneson).</p>
+        `;
+      }
 
-const FriendsPage = () => (
-  <section>
-    <h1>Friends Page</h1>
-    <div style={{ marginTop: 8 }}>
-      <p>Social features placeholder.</p>
-    </div>
-  </section>
-);
+      document.getElementById("sidebar").style.left = "-250px";
+    }
 
-const AboutPage = () => (
-  <section>
-    <h1>About Us</h1>
-    <div style={{ marginTop: 8 }}>
-      <p>This app helps JEE aspirants learn chemistry via gamified lessons.</p>
-    </div>
-  </section>
-);
+    // Show home by default
+    showPage("home");
+  </script>
 
-const SettingsPage = () => (
-  <section>
-    <h1>Settings</h1>
-    <div style={{ marginTop: 8 }}>
-      <p>Edit tutor names and preferences in the full version.</p>
-    </div>
-  </section>
-);
-
-const TutorsPage = () => (
-  <section>
-    <h1>Tutor Selection</h1>
-    <div style={{ marginTop: 8 }}>
-      <p>Choose your tutor (Alex, David, Sravya, Olivia, Mermi, Ogneson).</p>
-    </div>
-  </section>
-);
+</body>
+</html>
