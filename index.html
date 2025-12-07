@@ -1,142 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ChemLearn</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChemLearn</title>
 
-  <style>
+<style>
     body {
-      margin: 0;
-      padding: 0;
-      background-color: #6082B6; /* Glaucous */
-      font-family: Arial, sans-serif;
-      color: white;
-      overflow-x: hidden;
+        margin: 0;
+        background: #6082B6; /* glaucous */
+        font-family: Arial, sans-serif;
+        color: white;
     }
 
     /* Hamburger */
-    .hamburger {
-      font-size: 28px;
-      padding: 12px;
-      cursor: pointer;
+    #hamburger {
+        font-size: 28px;
+        padding: 15px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        color: white;
     }
 
     /* Sidebar */
     #sidebar {
-      height: 100%;
-      width: 250px;
-      background: #2c2c2c;
-      position: fixed;
-      top: 0;
-      left: -250px;
-      transition: 0.3s;
-      padding-top: 60px;
+        position: fixed;
+        top: 0;
+        left: -250px;
+        width: 250px;
+        height: 100%;
+        background: #2c2c2c;
+        color: white;
+        padding-top: 60px;
+        transition: 0.3s;
+        z-index: 10;
     }
 
     #sidebar ul {
-      list-style: none;
-      padding: 20px;
-      margin: 0;
+        list-style: none;
+        padding: 20px;
+        margin: 0;
     }
 
-    #sidebar ul li {
-      padding: 12px 0;
-      font-size: 18px;
-      cursor: pointer;
-      border-bottom: 1px solid #444;
+    #sidebar li {
+        padding: 12px 0;
+        font-size: 18px;
+        cursor: pointer;
     }
 
-    /* Page content */
-    #content {
-      padding: 20px;
-      margin-top: 20px;
+    main {
+        margin-top: 40px;
+        padding: 20px;
     }
-  </style>
+
+    .page {
+        display: none;
+    }
+
+    .active {
+        display: block;
+    }
+</style>
+
 </head>
-
 <body>
 
-  <!-- Hamburger -->
-  <span class="hamburger" onclick="toggleSidebar()">☰</span>
+<!-- Hamburger -->
+<button id="hamburger">☰</button>
 
-  <!-- Sidebar -->
-  <div id="sidebar">
+<!-- Sidebar -->
+<aside id="sidebar">
     <ul>
-      <li onclick="showPage('home')">Home</li>
-      <li onclick="showPage('topics')">Chemistry Topics</li>
-      <li onclick="showPage('friends')">Friends</li>
-      <!-- Messages removed exactly like you asked -->
-      <li onclick="showPage('about')">About Us</li>
-      <li onclick="showPage('settings')">Settings</li>
-      <li onclick="showPage('tutors')">Tutors</li>
+        <li onclick="showPage('home')">Home</li>
+        <li onclick="showPage('topics')">Chemistry Topics</li>
+        <li onclick="showPage('friends')">Friends</li>
+        <li onclick="showPage('about')">About Us</li>
+        <li onclick="showPage('settings')">Settings</li>
+        <li onclick="showPage('tutors')">Tutors</li>
     </ul>
-  </div>
+</aside>
 
-  <!-- Content -->
-  <div id="content"></div>
+<!-- Main Content -->
+<main>
+    <section id="home" class="page active">
+        <h1>Home Screen</h1>
+        <p>Welcome — choose Chemistry to begin interactive lessons and games.</p>
+    </section>
 
-  <script>
-    function toggleSidebar() {
-      let sb = document.getElementById("sidebar");
-      sb.style.left = sb.style.left === "0px" ? "-250px" : "0px";
-    }
-
-    function showPage(page) {
-      const content = document.getElementById("content");
-
-      if (page === "home") {
-        content.innerHTML = `
-          <h1>Home Screen</h1>
-          <p>Welcome — choose Chemistry to begin interactive lessons and games.</p>
-        `;
-      }
-
-      if (page === "topics") {
-        content.innerHTML = `
-          <h1>Chemistry Topics</h1>
-          <ul>
+    <section id="topics" class="page">
+        <h1>Chemistry Topics</h1>
+        <ul>
             <li>Hybridisation (sp, sp2, sp3, sp3d, sp3d2)</li>
             <li>Identifying Sigma & Pi Bonds</li>
             <li>IUPAC Nomenclature</li>
-          </ul>
-        `;
-      }
+        </ul>
+    </section>
 
-      if (page === "friends") {
-        content.innerHTML = `
-          <h1>Friends Page</h1>
-          <p>Social features placeholder.</p>
-        `;
-      }
+    <section id="friends" class="page">
+        <h1>Friends Page</h1>
+        <p>Social features placeholder.</p>
+    </section>
 
-      if (page === "about") {
-        content.innerHTML = `
-          <h1>About Us</h1>
-          <p>This app helps JEE aspirants learn chemistry via gamified lessons.</p>
-        `;
-      }
+    <section id="about" class="page">
+        <h1>About Us</h1>
+        <p>This app helps JEE aspirants learn chemistry via gamified lessons.</p>
+    </section>
 
-      if (page === "settings") {
-        content.innerHTML = `
-          <h1>Settings</h1>
-          <p>Edit tutor names and preferences in the full version.</p>
-        `;
-      }
+    <section id="settings" class="page">
+        <h1>Settings</h1>
+        <p>Edit tutor names and preferences in the full version.</p>
+    </section>
 
-      if (page === "tutors") {
-        content.innerHTML = `
-          <h1>Tutor Selection</h1>
-          <p>Choose your tutor (Alex, David, Sravya, Olivia, Mermi, Ogneson).</p>
-        `;
-      }
+    <section id="tutors" class="page">
+        <h1>Tutor Selection</h1>
+        <p>Choose your tutor (Alex, David, Sravya, Olivia, Mermi, Ogneson).</p>
+    </section>
+</main>
 
-      document.getElementById("sidebar").style.left = "-250px";
+<script>
+    const sidebar = document.getElementById("sidebar");
+    const burger = document.getElementById("hamburger");
+
+    burger.onclick = () => {
+        sidebar.style.left = sidebar.style.left === "0px" ? "-250px" : "0px";
+    };
+
+    function showPage(page) {
+        document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+        document.getElementById(page).classList.add("active");
+        sidebar.style.left = "-250px";
     }
-
-    // Show home by default
-    showPage("home");
-  </script>
+</script>
 
 </body>
 </html>
