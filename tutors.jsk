@@ -1,0 +1,13 @@
+// src/pages/TutorsPage.jsx
+import React from "react";
+
+export default function TutorsPage() {
+  return (
+    <section>
+      <h1>Tutor Selection</h1>
+      <div style={{ marginTop: 8 }}>
+        <p>Choose your tutor (Alex, David, Sravya, Olivia, Mermi, Ogneson).</p>
+      </div>
+    </section>
+  );
+}
