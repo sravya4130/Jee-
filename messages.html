@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages | JEE Chemistry</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .message-list {
+            list-style: none;
+            padding: 0;
+        }
+        .message-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.1s;
+        }
+        .message-item:hover {
+            background-color: #f9f9f9;
+        }
+        .message-subject {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .message-sender {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <i class="fas fa-bars hamburger-icon" id="menu-button"></i>
+        <span id="page-title">Messages</span>
+    </div>
+
+    <nav class="sidebar" id="sidebar">
+        <a href="index.html" class="sidebar-menu-item"><i class="fas fa-home"></i>Home</a>
+        <a href="topics.html" class="sidebar-menu-item"><i class="fas fa-flask"></i>Chemistry Topics</a>
+        <a href="friends.html" class="sidebar-menu-item"><i class="fas fa-user-friends"></i>Friends</a>
+        <a href="messages.html" class="sidebar-menu-item active"><i class="fas fa-envelope"></i>Messages</a>
+        <a href="tutors.html" class="sidebar-menu-item"><i class="fas fa-chalkboard-user"></i>Tutors</a>
+        <a href="settings.html" class="sidebar-menu-item"><i class="fas fa-cog"></i>Settings</a>
+        <a href="aboutus.html" class="sidebar-menu-item"><i class="fas fa-info-circle"></i>About Us</a>
+    </nav>
+    <div class="main-content">
+        <h1>Inbox</h1>
+        <div class="card">
+            <ul class="message-list">
+                <li class="message-item" onclick="alert('Opening message from Alex...')">
+                    <div class="message-subject">New Lesson Plan for IUPAC</div>
+                    <div class="message-sender">From: Alex, your Tutor | 2 hours ago</div>
+                </li>
+                <li class="message-item" onclick="alert('Opening message from Aryan...')">
+                    <div class="message-subject">Wanna study Quantum Numbers?</div>
+                    <div class="message-sender">From: Aryan Sharma | Yesterday</div>
+                </li>
+                <li class="message-item" onclick="alert('Opening message from System...')">
+                    <div class="message-subject">JEE Game Update! New Topics Added</div>
+                    <div class="message-sender">From: System Admin | 3 days ago</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
