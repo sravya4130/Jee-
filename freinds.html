@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends | JEE Chemistry</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .friend-list {
+            list-style: none;
+            padding: 0;
+        }
+        .friend-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .friend-icon {
+            font-size: 1.5em;
+            color: var(--accent-color);
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <i class="fas fa-bars hamburger-icon" id="menu-button"></i>
+        <span id="page-title">Friends</span>
+    </div>
+
+    <nav class="sidebar" id="sidebar">
+        <a href="index.html" class="sidebar-menu-item"><i class="fas fa-home"></i>Home</a>
+        <a href="topics.html" class="sidebar-menu-item"><i class="fas fa-flask"></i>Chemistry Topics</a>
+        <a href="friends.html" class="sidebar-menu-item active"><i class="fas fa-user-friends"></i>Friends</a>
+        <a href="messages.html" class="sidebar-menu-item"><i class="fas fa-envelope"></i>Messages</a>
+        <a href="tutors.html" class="sidebar-menu-item"><i class="fas fa-chalkboard-user"></i>Tutors</a>
+        <a href="settings.html" class="sidebar-menu-item"><i class="fas fa-cog"></i>Settings</a>
+        <a href="aboutus.html" class="sidebar-menu-item"><i class="fas fa-info-circle"></i>About Us</a>
+    </nav>
+    <div class="main-content">
+        <h1>Study Buddies & Leaderboards</h1>
+        <div class="card">
+            <h3>Friends List</h3>
+            <ul class="friend-list">
+                <li class="friend-item">
+                    <i class="fas fa-user-circle friend-icon"></i>
+                    <span>Aryan Sharma (Online)</span>
+                </li>
+                <li class="friend-item">
+                    <i class="fas fa-user-circle friend-icon"></i>
+                    <span>Priya Singh (Last seen: 2 hrs ago)</span>
+                </li>
+            </ul>
+            <button class="button-primary">Add New Friend</button>
+        </div>
+        
+        <div class="card">
+            <h3>Global Leaderboard</h3>
+            <p>Compete with other aspirants!</p>
+            <ol>
+                <li>You (Score: 4500)</li>
+                <li>Topper 1 (Score: 6200)</li>
+                <li>Topper 2 (Score: 5900)</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
