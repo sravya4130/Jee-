@@ -1,0 +1,90 @@
+/* --- style.css --- */
+:root {
+    --primary-color: #4CAF50; /* Student-friendly green */
+    --accent-color: #FF9800; /* Orange for highlights */
+    --text-color: #333;
+    --bg-color: #f4f6f9;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    min-height: 100vh;
+}
+
+/* --- Header and Menu Icon --- */
+.header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hamburger-icon {
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-right: 20px;
+    z-index: 1001; /* Above the sidebar */
+}
+
+/* --- Sliding Sidebar --- */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+    transform: translateX(-100%); /* Hidden by default */
+    transition: transform 0.3s ease-in-out; /* Smooth slide */
+    z-index: 1000;
+    padding-top: 70px; /* Space for the header */
+}
+
+.sidebar.open {
+    transform: translateX(0); /* Slides open */
+}
+
+.sidebar-menu-item {
+    padding: 15px 20px;
+    color: var(--text-color);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.sidebar-menu-item:hover, .sidebar-menu-item.active {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.sidebar-menu-item i {
+    margin-right: 15px;
+    width: 20px;
+}
+
+/* --- Main Content Area --- */
+.main-content {
+    padding: 20px;
+}
+
+/* --- Card Styles (for Tutors, Topics) --- */
+.card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+}
