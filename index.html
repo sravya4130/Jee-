@@ -1,177 +1,59 @@
-// Global Variables
-let selectedSubject = '';
-let selectedTutor = '';
-let selectedTopic = '';
-let tutors = JSON.parse(localStorage.getItem('tutors')) || ['Alex', 'David', 'Sravya', 'Olivia', 'Mermi', 'Ogneson'];
-let score = 0;
-let timerInterval;
-let timeLeft = 300; // Default 5 minutes
-let gameMode = 'type'; // 'type' or 'draw'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChemGenius | Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
 
-// Sample Data for Modularity
-const subjects = {
-    chemistry: {
-        topics: {
-            hybridisation: 'Content for Hybridisation...',
-            'sigma-pi': 'Content for Sigma & Pi bonds...',
-            iupac: {
-                teaching: 'IUPAC rules: 1. Identify the longest chain. 2. Number carbons. Examples: Methane (CH4) is methane. Ethane (C2H6) is ethane.',
-                examples: [
-                    { structure: 'CH4', name: 'methane' },
-                    { structure: 'C2H6', name: 'ethane' },
-                    { structure: 'C3H8', name: 'propane' }
-                ]
-            }
-        }
-    }
-};
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>ChemGenius</h3>
+        </div>
+        <ul class="list-unstyled components">
+            <li class="active"><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="topics.html"><i class="fas fa-flask"></i> Chemistry Topics</a></li>
+            <li><a href="tutors.html"><i class="fas fa-user-tie"></i> Tutors</a></li>
+            <li><a href="friends.html"><i class="fas fa-users"></i> Friends</a></li>
+            <li><a href="messages.html"><i class="fas fa-comments"></i> Messages</a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+        </ul>
+    </nav>
 
-// Sidebar Toggle
-function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('active');
-}
+    <div id="content-wrapper">
+        <header>
+            <button type="button" id="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <span id="current-page-title">Home</span>
+        </header>
 
-// Screen Navigation
-function showScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
-    document.getElementById(screenId).classList.add('active');
-    toggleSidebar();
-}
+        <section id="page-content" class="page-content active-page">
+            <h1>🧪 Welcome to ChemGenius!</h1>
+            <p class="tutor-speech-bubble">
+                Your personalized JEE Chemistry preparation hub. We make complex concepts easy and fun!
+            </p>
+            <div class="topic-grid">
+                <div class="topic-card">
+                    <h3>Current Subject: Chemistry</h3>
+                    <p>More subjects coming soon!</p>
+                </div>
+                <div class="topic-card" onclick="window.location.href='tutors.html'">
+                    <h3>Meet Your Tutor</h3>
+                    <p id="home-tutor-status">Select your guide.</p>
+                </div>
+            </div>
+            
+            <button class="primary-btn" onclick="window.location.href='topics.html'">
+                <i class="fas fa-book-open"></i> Start Learning Chemistry
+            </button>
+        </section>
+    </div>
 
-// Subject Selection
-function selectSubject(subject) {
-    selectedSubject = subject;
-    showScreen('tutor-selection');
-    loadTutors();
-}
-
-// Tutor Selection
-function loadTutors() {
-    const list = document.getElementById('tutor-list');
-    list.innerHTML = '';
-    tutors.forEach(tutor => {
-        const btn = document.createElement('button');
-        btn.className = 'tutor-btn';
-        btn.textContent = tutor;
-        btn.onclick = () => { selectedTutor = tutor; };
-        list.appendChild(btn);
-    });
-}
-
-// Topic Selection
-function selectTopic(topic) {
-    selectedTopic = topic;
-    if (topic === 'iupac') {
-        showScreen('iupac-teach');
-        loadIUPACTeach();
-    } else {
-        alert('Topic not fully implemented yet.');
-    }
-}
-
-// IUPAC Teaching
-function loadIUPACTeach() {
-    document.getElementById('tutor-display').textContent = `Tutor: ${selectedTutor}`;
-    document.getElementById('teaching-content').textContent = subjects.chemistry.topics.iupac.teaching;
-    alert('Audio: [Simulated teaching voice]');
-}
-
-// IUPAC Game
-function startIUPACGame() {
-    showScreen('iupac-game');
-    score = 0;
-    timeLeft = parseInt(prompt('Set timer (seconds, 60-300):', 300)) || 300;
-    gameMode = prompt('Mode: type or draw?', 'type');
-    document.getElementById('score').textContent = score;
-    startTimer();
-    loadGameQuestion();
-}
-
-function loadGameQuestion() {
-    const content = document.getElementById('game-content');
-    const example = subjects.chemistry.topics.iupac.examples[Math.floor(Math.random() * 3)];
-    if (gameMode === 'type') {
-        content.innerHTML = `<p>Structure: ${example.structure}</p><input id="answer" placeholder="Type IUPAC name"><button onclick="checkAnswer('${example.name}')">Submit</button>`;
-    } else {
-        content.innerHTML = `<p>Name: ${example.name}</p><canvas id="sketch" width="300" height="200"></canvas><button onclick="checkDrawing('${example.structure}')">Submit Drawing</button>`;
-        initCanvas();
-    }
-}
-
-function checkAnswer(correct) {
-    const answer = document.getElementById('answer').value.toLowerCase();
-    if (answer === correct) {
-        score += 10;
-        alert('Correct!');
-    } else {
-        alert('Wrong!');
-    }
-    document.getElementById('score').textContent = score;
-    loadGameQuestion();
-}
-
-function checkDrawing(correct) {
-    // Simple check: Assume correct if canvas has content (enhance later)
-    if (confirm('Is your drawing correct?')) {
-        score += 10;
-    }
-    document.getElementById('score').textContent = score;
-    loadGameQuestion();
-}
-
-function initCanvas() {
-    const canvas = document.getElementById('sketch');
-    const ctx = canvas.getContext('2d');
-    let drawing = false;
-    canvas.addEventListener('mousedown', () => drawing = true);
-    canvas.addEventListener('mouseup', () => drawing = false);
-    canvas.addEventListener('mousemove', (e) => {
-        if (drawing) {
-            ctx.lineTo(e.offsetX, e.offsetY);
-            ctx.stroke();
-        }
-    });
-}
-
-function startTimer() {
-    timerInterval = setInterval(() => {
-        timeLeft--;
-        document.getElementById('time-left').textContent = timeLeft;
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            alert('Time up! Final Score: ' + score);
-        }
-    }, 1000);
-}
-
-function hint() {
-    alert('Hint: Check the longest chain.');
-}
-
-function retry() {
-    clearInterval(timerInterval);
-    startIUPACGame();
-}
-
-// Settings: Edit Tutors
-function loadSettings() {
-    const list = document.getElementById('tutor-edit-list');
-    list.innerHTML = '';
-    tutors.forEach((tutor, index) => {
-        const input = document.createElement('input');
-        input.value = tutor;
-        input.id = `tutor-${index}`;
-        list.appendChild(input);
-    });
-}
-
-function saveTutorNames() {
-    tutors = tutors.map((_, index) => document.getElementById(`tutor-${index}`).value);
-    localStorage.setItem('tutors', JSON.stringify(tutors));
-    alert('Saved!');
-}
-
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    loadSettings(); // For settings screen
-});
+    <script src="script.js"></script>
+</body>
+</html>
