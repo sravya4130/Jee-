@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topics | JEE Chemistry</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .topic-card {
+            border-left: 5px solid var(--accent-color);
+            padding: 15px;
+            cursor: pointer;
+        }
+        .topic-card h3 {
+            margin-top: 0;
+            color: var(--text-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <i class="fas fa-bars hamburger-icon" id="menu-button"></i>
+        <span id="page-title">Chemistry Topics</span>
+    </div>
+
+    <nav class="sidebar" id="sidebar">
+        <a href="index.html" class="sidebar-menu-item"><i class="fas fa-home"></i>Home</a>
+        <a href="topics.html" class="sidebar-menu-item active"><i class="fas fa-flask"></i>Chemistry Topics</a>
+        <a href="friends.html" class="sidebar-menu-item"><i class="fas fa-user-friends"></i>Friends</a>
+        <a href="messages.html" class="sidebar-menu-item"><i class="fas fa-envelope"></i>Messages</a>
+        <a href="tutors.html" class="sidebar-menu-item"><i class="fas fa-chalkboard-user"></i>Tutors</a>
+        <a href="settings.html" class="sidebar-menu-item"><i class="fas fa-cog"></i>Settings</a>
+        <a href="aboutus.html" class="sidebar-menu-item"><i class="fas fa-info-circle"></i>About Us</a>
+    </nav>
+    <div class="main-content">
+        <h1>Select a Learning Module</h1>
+        <p>Your current selected tutor, **<span id="selected-tutor-name">Tutor Name</span>**, will guide you.</p>
+
+        <div class="card topic-card" onclick="alert('Starting IUPAC Nomenclature Game!')">
+            <h3>IUPAC Nomenclature</h3>
+            <p>Learn the rules and practice naming organic structures within a timed game.</p>
+        </div>
+
+        <div class="card topic-card" onclick="alert('Hybridisation module coming soon!')">
+            <h3>Hybridisation & Quantum Numbers</h3>
+            <p>Master $sp, sp^2, sp^3, sp^3d, sp^3d^2$, shells, and spin quantum numbers.</p>
+        </div>
+        
+        <div class="card topic-card" onclick="alert('Bonds module coming soon!')">
+            <h3>Identifying Sigma ($\sigma$) & Pi ($\pi$) Bonds</h3>
+            <p>Fundamental concepts of single, double, and triple bond composition.</p>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+    <script>
+        document.getElementById('selected-tutor-name').textContent = getSelectedTutor();
+    </script>
+</body>
+</html>
