@@ -1,27 +1,28 @@
-// --- app.js ---
+// --- app.js (Updated for overlay and smooth toggle) ---
 
 // --- 1. Sidebar Logic ---
 document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const menuButton = document.getElementById('menu-button');
+    const overlay = document.getElementById('sidebar-overlay');
 
     // Function to toggle the sidebar open/closed
     const toggleSidebar = () => {
-        sidebar.classList.toggle('open');
+        const isOpen = sidebar.classList.toggle('open');
+        overlay.classList.toggle('visible', isOpen);
     };
 
     menuButton.addEventListener('click', toggleSidebar);
 
-    // Optional: Close sidebar if user clicks outside of it (simple implementation)
-    document.addEventListener('click', (event) => {
-        if (sidebar.classList.contains('open') && 
-            !sidebar.contains(event.target) && 
-            !menuButton.contains(event.target)) {
-            sidebar.classList.remove('open');
+    // Close sidebar when clicking the dark overlay
+    overlay.addEventListener('click', () => {
+        if (sidebar.classList.contains('open')) {
+            toggleSidebar(); // Uses toggleSidebar to close both
         }
     });
 
     // Highlight the current page in the sidebar
+    // (Existing logic to highlight the active page)
     const currentPagePath = window.location.pathname.split('/').pop();
     document.querySelectorAll('.sidebar-menu-item').forEach(item => {
         const itemHref = item.getAttribute('href').split('/').pop();
@@ -35,12 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// --- 2. Tutor Data Management using LocalStorage ---
+// --- 2. Tutor Data Management (Unchanged from previous response) ---
 const DEFAULT_TUTOR_NAMES = ['Alex', 'David', 'Sravya', 'Olivia', 'Mermi', 'Ogneson'];
 const TUTOR_STORAGE_KEY = 'chemistryJeeTutors';
 const SELECTED_TUTOR_KEY = 'chemistryJeeSelectedTutor';
 
-// Function to initialize data in localStorage if it doesn't exist
 function initializeTutorData() {
     if (!localStorage.getItem(TUTOR_STORAGE_KEY)) {
         localStorage.setItem(TUTOR_STORAGE_KEY, JSON.stringify(DEFAULT_TUTOR_NAMES));
@@ -49,23 +49,15 @@ function initializeTutorData() {
         localStorage.setItem(SELECTED_TUTOR_KEY, DEFAULT_TUTOR_NAMES[0]);
     }
 }
-
-// Function to get the current list of tutor names
 function getTutorNames() {
     return JSON.parse(localStorage.getItem(TUTOR_STORAGE_KEY));
 }
-
-// Function to get the currently selected tutor
 function getSelectedTutor() {
     return localStorage.getItem(SELECTED_TUTOR_KEY);
 }
-
-// Function to set the currently selected tutor (used in tutors.html)
 function setSelectedTutor(name) {
     localStorage.setItem(SELECTED_TUTOR_KEY, name);
 }
-
-// Function to rename a tutor (used in settings.html)
 function renameTutor(oldName, newName) {
     const names = getTutorNames();
     const index = names.indexOf(oldName);
@@ -73,8 +65,6 @@ function renameTutor(oldName, newName) {
         names[index] = newName;
         localStorage.setItem(TUTOR_STORAGE_KEY, JSON.stringify(names));
     }
-    
-    // Update selected tutor if the renamed tutor was selected
     if (getSelectedTutor() === oldName) {
         setSelectedTutor(newName);
     }
